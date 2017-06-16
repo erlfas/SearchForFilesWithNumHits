@@ -43,16 +43,16 @@ func readLineByLine(target string, requiredNumHits int64, pathToFile string) {
 }
 
 func main() {
-	root := *flag.String("root", ".", "where to search from")
-	fileType := *flag.String("type", ".java", "file type to search for")
-	searchFor := *flag.String("word", "foo", "word to search for")
-	requiredNumHits := *flag.Int64("hits", 1, "required number of hits")
+	root := flag.String("root", ".", "where to search from")
+	fileType := flag.String("type", "xml", "file type to search for")
+	searchFor := flag.String("word", "foo", "word to search for")
+	requiredNumHits := flag.Int64("hits", 1, "required number of hits")
 
 	flag.Parse()
 
-	err := filepath.Walk(root, func(path string, f os.FileInfo, err error) error {
-		if f != nil && f.Mode().IsRegular() && strings.HasSuffix(f.Name(), fileType) {
-			readLineByLine(searchFor, requiredNumHits, path)
+	err := filepath.Walk(*root, func(path string, f os.FileInfo, err error) error {
+		if f != nil && f.Mode().IsRegular() && strings.HasSuffix(f.Name(), *fileType) {
+			readLineByLine(*searchFor, *requiredNumHits, path)
 		}
 		return nil
 	})
